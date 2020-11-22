@@ -1,0 +1,27 @@
+{
+  "name": "sanity-plugin-social-preview",
+  "displayName": "Sanity Social Preview plugin",
+  "publisher": "hdoro",
+  "description": "Show your editors how their page will look on Google and major social platforms in your documents' view",
+  "version": "0.1.3",
+  "author": {
+    "email": "opensource@hdoro.dev",
+    "name": "Henrique Doro",
+    "url": "https://hdoro.dev"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build"
+  },
+  "repository": "https://github.com/hdoro/sanity-plugin-social-preview",
+  "main": "build/SocialPreview.js",
+  "types": "src/previewTypes.d.ts",
+  "keywords": [
+    "Sanity.io",
+    "Headless CMS",
+    "Preview"
+  ],
+  "devDependencies": {
+    "typescript": "^4.1.2"
+  }
+}

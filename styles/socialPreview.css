@@ -1,0 +1,13 @@
+.share-item {
+  padding: 35px 45px;
+  overflow: hidden;
+}
+
+.share-item > * {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.share-item > h2 {
+  text-align: center;
+}

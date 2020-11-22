@@ -1,0 +1,12 @@
+{
+  "parts": [
+    {
+      "name": "part:social-preview/component",
+      "path": "./build/SocialPreview.js"
+    },
+    {
+      "name": "part:social-preview/utils",
+      "path": "./build/socialPreviewUtils.js"
+    }
+  ]
+}
