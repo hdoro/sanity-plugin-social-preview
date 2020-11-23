@@ -23,5 +23,8 @@
   ],
   "devDependencies": {
     "typescript": "^4.1.2"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
   }
 }
