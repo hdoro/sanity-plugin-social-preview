@@ -38,7 +38,7 @@ export const GoogleMobile: React.FC<BasePreviewProps> = ({
   const url = siteUrl + (slug || '')
 
   const ogImageUrl: string | undefined = ogImage
-    ? urlFor(ogImage).width(105).url() || undefined
+    ? urlFor(ogImage).size(104, 104).url() || undefined
     : undefined
 
   return (
