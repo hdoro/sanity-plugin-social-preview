@@ -3,14 +3,24 @@
   "displayName": "Sanity Social Preview plugin",
   "publisher": "hdoro",
   "description": "Show your editors how their page will look on Google and major social platforms in your documents' view",
-  "version": "0.1.3",
+  "version": "0.1.4",
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
   "author": {
     "email": "opensource@hdoro.dev",
     "name": "Henrique Doro",
     "url": "https://hdoro.dev"
   },
   "scripts": {
-    "build": "tsc",
+    "format": "prettier --write .",
+    "clear-lib": "node clearLib.js",
+    "build": "npm run format && npm run clear-lib && tsc",
+    "dev": "tsc -w",
     "prepublish": "npm run build"
   },
   "repository": "https://github.com/hdoro/sanity-plugin-social-preview",
@@ -18,13 +28,21 @@
   "types": "src/previewTypes.d.ts",
   "keywords": [
     "Sanity.io",
+    "plugin",
     "Headless CMS",
     "Preview"
   ],
   "devDependencies": {
-    "typescript": "^4.1.2"
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.2"
   },
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "dependencies": {
+    "@sanity/image-url": "^0.140.22"
   }
 }

@@ -47,8 +47,8 @@ This plugin tries to mimic [Sanity's `preview` behavior on list views](https://w
 If, for example, your description comes from `doc.meta.description` and that's a block content, and you want to change your site's URL shown on cards, you can customize the view by doing so:
 
 ```js
-import SocialPreview from "part:social-preview/component";
-import { toPlainText } from "part:social-preview/utils";
+import SocialPreview from 'part:social-preview/component'
+import { toPlainText } from 'part:social-preview/utils'
 
 export const getDefaultDocumentNode = ({ schemaType }) => {
   return S.document().views([
@@ -58,17 +58,17 @@ export const getDefaultDocumentNode = ({ schemaType }) => {
         SocialPreview({
           // Overwrite prepareFunction to pick the right fields
           prepareFunction: (
-            { title, meta } /* this object is the currently active document */
+            { title, meta } /* this object is the currently active document */,
           ) => ({
             title,
             description: toPlainText(meta?.description || []),
-            siteUrl: "https://hdoro.dev",
+            siteUrl: 'https://hdoro.dev',
           }),
-        })
+        }),
       )
-      .title("Social & SEO"),
-  ]);
-};
+      .title('Social & SEO'),
+  ])
+}
 ```
 
 You can also remove any individual previews:
@@ -80,8 +80,8 @@ S.view.component(
     facebook: false,
     twitter: true,
     linkedin: false,
-  })
-);
+  }),
+)
 ```
 
 💡 Eventually I intend to make our lives easier by providing a `select` object that works like Sanity's list preview, making it easier to overwrite fields without the need for a new `prepare` function. In the meantime, feel free to [**copy the fallbackPrepare function** from this repo](https://github.com/hdoro/sanity-plugin-social-preview/blob/master/src/SocialPreview.tsx#L15-L27).
@@ -90,31 +90,31 @@ Your custom `prepare` function must return an object with the following:
 
 ```ts
 interface PreparedPreview {
-  title: string;
-  siteUrl: string;
+  title: string
+  siteUrl: string
   // ? denotes an optional prop
-  description?: string;
+  description?: string
   ogImage?: {
     // Regular SanityImage data structure
     // other fields such as metadata can come in here, but asset is the only necessary
     asset: {
-      _ref: string;
-      _type: "reference";
-    };
-  };
+      _ref: string
+      _type: 'reference'
+    }
+  }
   // Used by Google preview to render the full URL
   // Note that this is a string, not an object (slug { current: string })
-  slug?: string;
+  slug?: string
 }
 
 // And here are the props for the SocialPreview function
 interface SocialPreview {
   // Function you'll use to customize which props correspond to which
-  prepareFunction: (doc: GenericSanityDoc) => PreparedPreview | undefined;
-  google?: boolean;
-  twitter?: boolean;
-  linkedin?: boolean;
-  facebook?: boolean;
+  prepareFunction: (doc: GenericSanityDoc) => PreparedPreview | undefined
+  google?: boolean
+  twitter?: boolean
+  linkedin?: boolean
+  facebook?: boolean
 }
 ```
 
@@ -125,3 +125,5 @@ As it stands, you can't customize styles. I've built this over a year ago and ha
 - Mimic the Sanity-native preview object behavior for selecting the required props
   - Currently only `prepare` is provided, meaning you have rewrite everything if you need to change a single field's name. Providing `select` would fix this :)
 - Update layouts - LinkedIn and Facebook are wildly different now
+
+Feel free to contribute with your PR, as long as you're respectful. Big thanks to @mornir for your help!

@@ -6,7 +6,7 @@
     "isolatedModules": true,
     "jsx": "react",
     "lib": ["dom", "es2017"],
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
@@ -16,13 +16,13 @@
     "strict": true,
     "target": "ES6",
     "typeRoots": ["./node_modules/@types"],
-    "outDir": "build"
+    "outDir": "lib"
   },
   "exclude": ["node_modules"],
   "include": [
     "./node_modules/@sanity/base/types/**/*.ts",
     "./**/*.ts",
     "./**/*.tsx",
-    "./**/*.d.ts",
+    "./**/*.d.ts"
   ]
 }

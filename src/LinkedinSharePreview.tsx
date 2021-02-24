@@ -5,7 +5,7 @@ import { urlFor } from './socialPreviewUtils'
 import GlobeIcon from './GlobeIcon'
 import { BasePreviewProps } from './previewTypes'
 
-const LinkedinSharePreview: React.FC<BasePreviewProps> =({
+const LinkedinSharePreview: React.FC<BasePreviewProps> = ({
   title,
   description,
   ogImage,

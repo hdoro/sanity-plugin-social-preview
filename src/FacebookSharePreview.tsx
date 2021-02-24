@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 
 import s from '../styles/FacebookSharePreview.module.css'
 import { urlFor, getDomainName } from './socialPreviewUtils'
@@ -9,7 +9,7 @@ const FacebookSharePreview: React.FC<BasePreviewProps> = ({
   title,
   description,
   ogImage,
-  siteUrl
+  siteUrl,
 }) => {
   const ogImageUrl: string | undefined = ogImage
     ? urlFor(ogImage).size(1200, 630).url() || undefined

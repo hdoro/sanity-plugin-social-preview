@@ -1,2 +1,7 @@
+.git
 src/*
 !src/previewTypes.d.ts
+clearLib.js
+.prettierignore
+.prettierrc
+tsconfig.json

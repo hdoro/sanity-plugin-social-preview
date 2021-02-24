@@ -43,7 +43,7 @@ export function toPlainText(
           : `[${block._type} block]`
       }
 
-      return block.children.map((child: any) => child.text || "").join('')
+      return block.children.map((child: any) => child.text || '').join('')
     })
     .join('\n\n')
 }

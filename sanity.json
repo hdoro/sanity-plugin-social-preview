@@ -2,11 +2,11 @@
   "parts": [
     {
       "name": "part:social-preview/component",
-      "path": "./build/SocialPreview.js"
+      "path": "./lib/SocialPreview.js"
     },
     {
       "name": "part:social-preview/utils",
-      "path": "./build/socialPreviewUtils.js"
+      "path": "./lib/socialPreviewUtils.js"
     }
   ]
 }
