@@ -11,7 +11,7 @@ const TwitterSharePreview: React.FC<BasePreviewProps> = ({
   siteUrl,
 }) => {
   const ogImageUrl: string | undefined = ogImage
-    ? urlFor(ogImage).width(560).url() || undefined
+    ? urlFor(ogImage).size(1200, 600).url() || undefined
     : undefined
   return (
     <section

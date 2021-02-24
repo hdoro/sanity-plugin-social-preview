@@ -12,7 +12,7 @@ const FacebookSharePreview: React.FC<BasePreviewProps> = ({
   siteUrl
 }) => {
   const ogImageUrl: string | undefined = ogImage
-    ? urlFor(ogImage).width(500).url() || undefined
+    ? urlFor(ogImage).size(1200, 630).url() || undefined
     : undefined
   return (
     <section
