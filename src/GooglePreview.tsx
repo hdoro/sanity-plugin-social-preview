@@ -50,7 +50,11 @@ export const GoogleMobile: React.FC<BasePreviewProps> = ({
         </div>
         <h3>{title}</h3>
         <div className={s.contentMobile}>
-          <div>{description}</div>
+          <div>
+            {description && description.length > 135
+              ? description.slice(0, 135) + ' ...'
+              : description}
+          </div>
           {ogImageUrl && <img src={ogImageUrl} />}
         </div>
       </div>
