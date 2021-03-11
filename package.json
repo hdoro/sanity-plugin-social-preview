@@ -3,7 +3,7 @@
   "displayName": "Sanity Social Preview plugin",
   "publisher": "hdoro",
   "description": "Show your editors how their page will look on Google and major social platforms in your documents' view",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "Apache-2.0",
   "licenses": [
     {
