@@ -20,7 +20,7 @@ export const GoogleDesktop: React.FC<BasePreviewProps> = ({
         <div className={s.metaDesktop}>{url}</div>
         <p>
           {description && description.length > 135
-            ? `${description.slice(0, 135)} ...`
+            ? description.slice(0, 135) + ' ...'
             : description}
         </p>
       </div>
@@ -32,11 +32,11 @@ export const GoogleMobile: React.FC<BasePreviewProps> = ({
   title,
   description,
   ogImage,
-  ogImageAbsoluteUrl,
   siteUrl,
   slug,
 }) => {
   const url = siteUrl + (slug || '')
+
   let absoluteImageUrl: string | undefined
 
   if (ogImageAbsoluteUrl) {
@@ -55,18 +55,15 @@ export const GoogleMobile: React.FC<BasePreviewProps> = ({
   return (
     <section className="share-item">
       <h2>Mobile Google result</h2>
-      <div className={`${s.wrapper} ${s.wrapperMobile}`}>
+      <div className={s.wrapper + ' ' + s.wrapperMobile}>
         <div className={s.metaMobile}>
-          <div>
-            <img src={`//logo.clearbit.com/${url}`} alt="Logo for website" />
-          </div>{' '}
-          {url}
+          <div /> {url}
         </div>
         <h3>{title}</h3>
         <div className={s.contentMobile}>
           <div>
             {description && description.length > 135
-              ? `${description.slice(0, 135)} ...`
+              ? description.slice(0, 135) + ' ...'
               : description}
           </div>
           {ogImageUrl && <img src={ogImageUrl} />}

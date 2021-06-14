@@ -8,7 +8,6 @@ const TwitterSharePreview: React.FC<BasePreviewProps> = ({
   title,
   description,
   ogImage,
-  ogImageAbsoluteUrl,
   siteUrl,
 }) => {
   let absoluteImageUrl: string | undefined = undefined
@@ -25,6 +24,7 @@ const TwitterSharePreview: React.FC<BasePreviewProps> = ({
   const ogImageUrl: string | undefined = ogImage
     ? urlFor(ogImage).size(1200, 600).url() || undefined
     : absoluteImageUrl || undefined
+    
   return (
     <section
       className="share-item"

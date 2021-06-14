@@ -9,7 +9,6 @@ const FacebookSharePreview: React.FC<BasePreviewProps> = ({
   title,
   description,
   ogImage,
-  ogImageAbsoluteUrl,
   siteUrl,
 }) => {
   let absoluteImageUrl: string | undefined
