@@ -9,11 +9,12 @@ const FacebookSharePreview: React.FC<BasePreviewProps> = ({
   title,
   description,
   ogImage,
+  ogImageAbsoluteUrl,
   siteUrl,
 }) => {
   const ogImageUrl: string | undefined = ogImage
     ? urlFor(ogImage).size(1200, 630).url() || undefined
-    : undefined
+    : ogImageAbsoluteUrl || undefined
   return (
     <section
       className="share-item"

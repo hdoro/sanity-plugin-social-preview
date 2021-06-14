@@ -32,6 +32,7 @@ export const GoogleMobile: React.FC<BasePreviewProps> = ({
   title,
   description,
   ogImage,
+  ogImageAbsoluteUrl,
   siteUrl,
   slug,
 }) => {
@@ -39,7 +40,7 @@ export const GoogleMobile: React.FC<BasePreviewProps> = ({
 
   const ogImageUrl: string | undefined = ogImage
     ? urlFor(ogImage).size(104, 104).url() || undefined
-    : undefined
+    : ogImageAbsoluteUrl || undefined
 
   return (
     <section className="share-item">
