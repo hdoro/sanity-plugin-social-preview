@@ -47,6 +47,7 @@ export interface BasePreviewProps {
   title: string
   description?: string
   ogImage?: SanityImage
+  ogImageAbsoluteUrl?: string
   siteUrl: string
   slug?: string
 }

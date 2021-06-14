@@ -37,9 +37,20 @@ export const GoogleMobile: React.FC<BasePreviewProps> = ({
 }) => {
   const url = siteUrl + (slug || '')
 
+  let absoluteImageUrl: string | undefined
+
+  if (ogImageAbsoluteUrl) {
+    absoluteImageUrl =
+      ogImageAbsoluteUrl.startsWith('https://') ||
+      ogImageAbsoluteUrl.startsWith('http://') ||
+      ogImageAbsoluteUrl.startsWith('//')
+        ? ogImageAbsoluteUrl
+        : undefined
+  }
+
   const ogImageUrl: string | undefined = ogImage
     ? urlFor(ogImage).size(104, 104).url() || undefined
-    : undefined
+    : absoluteImageUrl || undefined
 
   return (
     <section className="share-item">
