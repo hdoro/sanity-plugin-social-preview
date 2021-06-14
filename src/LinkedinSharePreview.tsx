@@ -11,9 +11,20 @@ const LinkedinSharePreview: React.FC<BasePreviewProps> = ({
   ogImage,
   ogImageAbsoluteUrl,
 }) => {
+  let absoluteImageUrl: string | undefined
+
+  if (ogImageAbsoluteUrl) {
+    absoluteImageUrl =
+      ogImageAbsoluteUrl.startsWith('https://') ||
+      ogImageAbsoluteUrl.startsWith('http://') ||
+      ogImageAbsoluteUrl.startsWith('//')
+        ? ogImageAbsoluteUrl
+        : undefined
+  }
+
   const ogImageUrl: string | undefined = ogImage
     ? urlFor(ogImage).size(1200, 630).url() || undefined
-    : ogImageAbsoluteUrl || undefined
+    : absoluteImageUrl || undefined
   return (
     <section className="share-item" style={{ background: '#f5f5f5' }}>
       <h2>LinkedIn sharing</h2>

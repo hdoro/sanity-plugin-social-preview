@@ -11,9 +11,20 @@ const TwitterSharePreview: React.FC<BasePreviewProps> = ({
   ogImageAbsoluteUrl,
   siteUrl,
 }) => {
+  let absoluteImageUrl: string | undefined = undefined
+
+  if (ogImageAbsoluteUrl) {
+    absoluteImageUrl =
+      ogImageAbsoluteUrl.startsWith('https://') ||
+      ogImageAbsoluteUrl.startsWith('http://') ||
+      ogImageAbsoluteUrl.startsWith('//')
+        ? ogImageAbsoluteUrl
+        : undefined
+  }
+
   const ogImageUrl: string | undefined = ogImage
     ? urlFor(ogImage).size(1200, 600).url() || undefined
-    : ogImageAbsoluteUrl || undefined
+    : absoluteImageUrl || undefined
   return (
     <section
       className="share-item"
