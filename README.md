@@ -40,6 +40,7 @@ This plugin tries to mimic [Sanity's `preview` behavior on list views](https://w
   description: doc.description || doc.metaDescription || doc.seoDescription,
   siteUrl: 'https://example.com',
   ogImage: doc.openGraphImage || doc.ogImage || doc.image,
+  ogImageAbsoluteUrl: 'https://example.com/ogImage.jpeg',
   slug: doc.slug?.current || doc.relativePath?.current,
 }
 ```
@@ -102,6 +103,7 @@ interface PreparedPreview {
       _type: 'reference'
     }
   }
+  ogImageAbsoluteUrl?: string
   // Used by Google preview to render the full URL
   // Note that this is a string, not an object (slug { current: string })
   slug?: string
