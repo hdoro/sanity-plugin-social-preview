@@ -1,29 +1,25 @@
 import React from 'react'
+import { Spinner, Flex } from '@sanity/ui'
+import { FacebookSharePreview } from './networks/Facebook'
+import { TwitterSharePreview } from './networks/Twitter'
+import { LinkedinSharePreview } from './networks/Linkedin'
+import { GoogleDesktop, GoogleMobile } from './networks/Google'
 
-import FacebookSharePreview from './FacebookSharePreview'
-import TwitterSharePreview from './TwitterSharePreview'
-import LinkedinSharePreview from './LinkedinSharePreview'
-import { GoogleDesktop, GoogleMobile } from './GooglePreview'
+import { DocumentView, GenericSanityDoc, BasePreviewProps } from './types'
+import { toPlainText } from './utils'
 
-import '../styles/socialPreview.css?raw'
-import {
-  DocumentView,
-  GenericSanityDoc,
-  BasePreviewProps,
-} from './previewTypes'
-import { toPlainText } from './socialPreviewUtils'
-
-function fallbackPrepare(doc: GenericSanityDoc): BasePreviewProps | undefined {
+function fallbackPrepare(doc: GenericSanityDoc): BasePreviewProps | void {
   if (!doc) {
     return
   }
-  const description =
-    doc.description || doc.metaDescription || doc.seoDescription
+  const description = doc.description || doc.metaDescription || doc.seoDescription
+
   // Sane defaults to what we could use for title, description, etc.
+  // eslint-disable-next-line
   return {
     title: doc.title || '(page not yet named)',
-    // @TODO: consider checking if
     description:
+      // eslint-disable-next-line
       typeof description === 'string'
         ? description
         : Array.isArray(description)
@@ -53,25 +49,21 @@ const SocialPreview = ({
   twitter = true,
   linkedin = true,
   facebook = true,
-}:
-  | SocialPreviewProps
-  | { [key: string]: any }
-  | undefined = {}): React.FC<DocumentView> => {
-  return ({ document }: DocumentView) => {
+}: SocialPreviewProps | { [key: string]: any } | undefined = {}): React.FC<DocumentView> => {
+  return function SocialPreviewComponent({ document }: DocumentView) {
     const previewProps = prepareFunction(document?.displayed)
 
-    if (!previewProps) {
-      return null
+    if (!previewProps || !document?.displayed) {
+      return (
+        <Flex justify="center" align="center" height="fill">
+          <Spinner muted size={2} />
+        </Flex>
+      )
     }
 
     return (
       <>
-        {google && (
-          <>
-            <GoogleDesktop {...previewProps} />
-            <GoogleMobile {...previewProps} />
-          </>
-        )}
+        {google && <GoogleDesktop {...previewProps} />}
         {facebook && <FacebookSharePreview {...previewProps} />}
         {twitter && <TwitterSharePreview {...previewProps} />}
         {linkedin && <LinkedinSharePreview {...previewProps} />}

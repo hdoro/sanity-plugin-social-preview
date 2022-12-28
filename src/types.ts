@@ -50,17 +50,3 @@ export interface BasePreviewProps {
   siteUrl: string
   slug?: string
 }
-
-declare module 'part:social-preview/component' {
-  const SocialPreview: (props: SocialPreviewProps) => any
-  export default SocialPreview
-}
-
-declare module 'part:social-preview/utils' {
-  export function toPlainText(
-    blocks: any[],
-    opts: {
-      nonTextBehavior?: 'remove'
-    } = {},
-  ): string
-}
