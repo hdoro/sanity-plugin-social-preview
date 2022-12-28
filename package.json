@@ -1,48 +1,96 @@
 {
   "name": "sanity-plugin-social-preview",
   "displayName": "Sanity Social Preview plugin",
-  "publisher": "hdoro",
-  "description": "Show your editors how their page will look on Google and major social platforms in your documents' view",
   "version": "0.1.5",
-  "license": "Apache-2.0",
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
-  "author": {
-    "email": "opensource@hdoro.dev",
-    "name": "Henrique Doro",
-    "url": "https://hdoro.dev"
-  },
-  "scripts": {
-    "format": "prettier --write .",
-    "clear-lib": "node clearLib.js",
-    "build": "npm run format && npm run clear-lib && tsc",
-    "dev": "tsc -w",
-    "prepublish": "npm run build"
-  },
-  "repository": "https://github.com/hdoro/sanity-plugin-social-preview",
-  "main": "build/SocialPreview.js",
-  "types": "src/previewTypes.d.ts",
+  "description": "Show your editors how their page will look on Google and major social platforms in your documents' view",
   "keywords": [
     "Sanity.io",
     "plugin",
     "Headless CMS",
     "Preview"
   ],
-  "devDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "prettier": "^2.2.1",
-    "typescript": "^4.2.2"
+  "homepage": "https://github.com/hdoro/sanity-plugin-social-preview#readme",
+  "bugs": {
+    "url": "https://github.com/hdoro/sanity-plugin-social-preview/issues"
   },
-  "peerDependencies": {
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hdoro/sanity-plugin-social-preview.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Henrique Doro <opensource@hdoro.dev>",
+  "publisher": "hdoro",
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./lib/src/index.d.ts",
+      "source": "./src/index.ts",
+      "import": "./lib/index.esm.js",
+      "require": "./lib/index.js",
+      "default": "./lib/index.esm.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./lib/index.js",
+  "module": "./lib/index.esm.js",
+  "source": "./src/index.ts",
+  "types": "./lib/src/index.d.ts",
+  "files": [
+    "src",
+    "lib",
+    "v2-incompatible.js",
+    "sanity.json"
+  ],
+  "scripts": {
+    "prebuild": "npm run clean && plugin-kit verify-package --silent && pkg-utils",
+    "build": "pkg-utils build",
+    "clean": "rimraf lib",
+    "format": "prettier --write .",
+    "link-watch": "plugin-kit link-watch",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build",
+    "prepublish": "npm run build",
+    "watch": "pkg-utils watch"
   },
   "dependencies": {
-    "@sanity/image-url": "^0.140.22"
-  }
+    "@sanity/image-url": "^0.140.22",
+    "@sanity/incompatible-plugin": "^1.0.4"
+  },
+  "devDependencies": {
+    "@sanity/pkg-utils": "^2.0.3",
+    "@sanity/plugin-kit": "^2.2.0",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/styled-components": "^5.1.26",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/parser": "^5.47.1",
+    "eslint": "^8.30.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-sanity": "^6.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.1",
+    "prettier-plugin-packagejson": "^2.3.0",
+    "react": "^18",
+    "rimraf": "^3.0.2",
+    "sanity": "^3.0.0",
+    "styled-components": ">= 5.0.0",
+    "typescript": "^4.9.4"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18",
+    "sanity": "^3.0.0",
+    "styled-components": ">= 5.0.0"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ]
 }
