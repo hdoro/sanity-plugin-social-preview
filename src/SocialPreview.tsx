@@ -1,12 +1,20 @@
 import React from 'react'
+import { useState } from 'react'
 import { Spinner, Flex } from '@sanity/ui'
+import styled from 'styled-components'
+
 import { FacebookSharePreview } from './networks/Facebook'
 import { TwitterSharePreview } from './networks/Twitter'
 import { LinkedinSharePreview } from './networks/Linkedin'
 import { GoogleDesktop, GoogleMobile } from './networks/Google'
-
 import { DocumentView, GenericSanityDoc, BasePreviewProps } from './types'
 import { toPlainText } from './utils'
+
+// LOGOS:
+import FacebookLogo from './components/Facebook/FacebookLogo'
+import GoogleLogo from './components/GoogleLogo'
+import TwitterLogo from './components/TwitterLogo'
+import LinkedinLogo from './components/LinkedinLogo'
 
 function fallbackPrepare(doc: GenericSanityDoc): BasePreviewProps | void {
   if (!doc) {
@@ -42,6 +50,32 @@ export interface SocialPreviewProps {
   facebook?: boolean
 }
 
+const Wrapper = styled.div`
+  font-family: Open Sans, sans-serif;
+  .navBar {
+    background-color: white;
+    display: flex;
+    margin: 1.5em 12.5em;
+    justify-content: space-around;
+  }
+
+  button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    transform: scale(0.8);
+    transition: all 0.2s;
+
+    &:hover {
+      transform: scale(1.3);
+    }
+  }
+
+  h2 {
+    text-transform: uppercase;
+  }
+`
+
 // @TODO: select object to make it easier to re-use prepare function logic
 const SocialPreview = ({
   prepareFunction = fallbackPrepare,
@@ -52,6 +86,7 @@ const SocialPreview = ({
 }: SocialPreviewProps | { [key: string]: any } | undefined = {}): React.FC<DocumentView> => {
   return function SocialPreviewComponent({ document }: DocumentView) {
     const previewProps = prepareFunction(document?.displayed)
+    const [network, setNetwork] = useState('linkedin')
 
     if (!previewProps || !document?.displayed) {
       return (
@@ -62,12 +97,28 @@ const SocialPreview = ({
     }
 
     return (
-      <>
-        {google && <GoogleDesktop {...previewProps} />}
-        {facebook && <FacebookSharePreview {...previewProps} />}
-        {twitter && <TwitterSharePreview {...previewProps} />}
-        {linkedin && <LinkedinSharePreview {...previewProps} />}
-      </>
+      <Wrapper>
+        <>
+          <div className="navBar">
+            <button type="button" onClick={() => setNetwork('google')}>
+              <GoogleLogo />
+            </button>
+            <button type="button" onClick={() => setNetwork('facebook')}>
+              <FacebookLogo />
+            </button>
+            <button type="button" onClick={() => setNetwork('twitter')}>
+              <TwitterLogo />
+            </button>
+            <button type="button" onClick={() => setNetwork('linkedin')}>
+              <LinkedinLogo />
+            </button>
+          </div>
+          {network === 'google' && google && <GoogleDesktop {...previewProps} />}
+          {network === 'facebook' && facebook && <FacebookSharePreview {...previewProps} />}
+          {network === 'twitter' && twitter && <TwitterSharePreview {...previewProps} />}
+          {network === 'linkedin' && linkedin && <LinkedinSharePreview {...previewProps} />}
+        </>
+      </Wrapper>
     )
   }
 }
