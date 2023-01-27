@@ -22,7 +22,7 @@ const FacebookSharePreview: React.FC<BasePreviewProps> = ({
       <h2>Facebook sharing</h2>
       <div className={s.wrapper}>
         <div className={s.header}>
-          <img src="https://via.placeholder.com/40/40" aria-hidden />
+          <img src="https://via.placeholder.com/40x40" aria-hidden />
           <div>Person</div>
           <span>
             1h <GlobeIcon />

@@ -22,7 +22,7 @@ const TwitterSharePreview: React.FC<BasePreviewProps> = ({
       <div className={s.wrapper}>
         <div className={s.header}>
           <div className={s.profile}>
-            <img src="https://via.placeholder.com/48/48" aria-hidden />
+            <img src="https://via.placeholder.com/48x48" aria-hidden />
             <div>Person</div>
             <span>@person</span>
           </div>

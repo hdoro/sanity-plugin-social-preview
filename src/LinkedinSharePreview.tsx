@@ -18,7 +18,7 @@ const LinkedinSharePreview: React.FC<BasePreviewProps> = ({
       <h2>LinkedIn sharing</h2>
       <div className={s.wrapper}>
         <div className={s.profile}>
-          <img src="https://via.placeholder.com/48/48" aria-hidden />
+          <img src="https://via.placeholder.com/48x48" aria-hidden />
           <div>
             Person <span>• 1st</span>
           </div>
