@@ -65,14 +65,12 @@ const Wrapper = styled.div`
     cursor: pointer;
     transform: scale(0.8);
     transition: all 0.2s;
+    filter: grayscale(1);
 
     &:hover {
-      transform: scale(1.3);
+      transform: scale(1.03);
+      filter: grayscale(0);
     }
-  }
-
-  h2 {
-    text-transform: uppercase;
   }
 `
 
