@@ -146,10 +146,10 @@ const Wrapper = styled.div`
   }
 `
 
-export function TwitterSharePreview({ title, description, ogImage, siteUrl }: BasePreviewProps) {
+export function TwitterSharePreview({ title, description, image, url }: BasePreviewProps) {
   const urlFor = useUrlFor()
-  const ogImageUrl: string | undefined = ogImage
-    ? urlFor(ogImage).size(1200, 600).url() || undefined
+  const ogImageUrl: string | undefined = image
+    ? urlFor(image).size(1200, 600).url() || undefined
     : undefined
   return (
     <ShareItem style={{ background: 'rgb(230, 236, 240)' }} title="Twitter sharing">
@@ -172,7 +172,7 @@ export function TwitterSharePreview({ title, description, ogImage, siteUrl }: Ba
           <div className={'card'}>
             <img src={ogImageUrl} />
             <div className={'content'}>
-              <span>{getDomainName(siteUrl)}</span>
+              <span>{getDomainName(url)}</span>
               <div>{title}</div>
               {description && <p>{truncate(description, 150)}</p>}
             </div>

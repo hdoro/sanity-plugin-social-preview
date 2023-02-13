@@ -50,9 +50,7 @@ const DesktopWrapper = styled.div`
   }
 `
 
-export function GoogleDesktop({ title, description, siteUrl, slug }: BasePreviewProps) {
-  const url = siteUrl + (slug || '')
-
+export function GoogleDesktop({ title, description, url }: BasePreviewProps) {
   return (
     <ShareItem title="Google result">
       <DesktopWrapper>

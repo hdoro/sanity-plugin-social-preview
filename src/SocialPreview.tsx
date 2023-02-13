@@ -1,53 +1,23 @@
 import { Flex, Spinner } from '@sanity/ui'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
-import { FacebookSharePreview } from './networks/Facebook'
-import { GoogleDesktop } from './networks/Google'
-import { LinkedinSharePreview } from './networks/Linkedin'
-import { TwitterSharePreview } from './networks/Twitter'
-import { BasePreviewProps, DocumentView, GenericSanityDoc } from './types'
-import { toPlainText } from './utils'
-
-// LOGOS:
 import FacebookLogo from './components/Facebook/FacebookLogo'
 import GoogleLogo from './components/GoogleLogo'
 import LinkedinLogo from './components/LinkedinLogo'
 import TwitterLogo from './components/TwitterLogo'
-
-function fallbackPrepare(doc: GenericSanityDoc): BasePreviewProps | void {
-  if (!doc) {
-    return
-  }
-  const description = doc.description || doc.metaDescription || doc.seoDescription
-
-  // Sane defaults to what we could use for title, description, etc.
-  // eslint-disable-next-line
-  return {
-    title: doc.title || '(page not yet named)',
-    description:
-      // eslint-disable-next-line
-      typeof description === 'string'
-        ? description
-        : Array.isArray(description)
-        ? toPlainText(description)
-        : undefined,
-    siteUrl: 'https://example.com',
-    ogImage: doc.openGraphImage || doc.ogImage || doc.image,
-    slug: doc.slug?.current || doc.relativePath?.current,
-  }
-}
-
-export interface SocialPreviewProps {
-  /**
-   * Function you'll use to customize which props correspond to which
-   */
-  prepareFunction: (doc: GenericSanityDoc) => BasePreviewProps | undefined
-  google?: boolean
-  twitter?: boolean
-  linkedin?: boolean
-  facebook?: boolean
-}
+import { fallbackPrepareData } from './fallbackPrepareData'
+import { FacebookSharePreview } from './networks/Facebook'
+import { GoogleDesktop } from './networks/Google'
+import { LinkedinSharePreview } from './networks/Linkedin'
+import { TwitterSharePreview } from './networks/Twitter'
+import {
+  BasePreviewProps,
+  DocumentView,
+  Network,
+  PrepareFunction,
+  SocialPreviewProps,
+} from './types'
 
 const Wrapper = styled.div`
   font-family: Open Sans, sans-serif;
@@ -86,17 +56,31 @@ const Wrapper = styled.div`
   }
 `
 
-// @TODO: select object to make it easier to re-use prepare function logic
+const NETWORKS: Record<
+  Network,
+  { icon: React.FC<{}>; component: (props: BasePreviewProps) => React.ReactElement }
+> = {
+  google: { icon: GoogleLogo, component: GoogleDesktop },
+  facebook: { icon: FacebookLogo, component: FacebookSharePreview },
+  twitter: { icon: TwitterLogo, component: TwitterSharePreview },
+  linkedin: { icon: LinkedinLogo, component: LinkedinSharePreview },
+}
+
 const SocialPreview = ({
-  prepareFunction = fallbackPrepare,
-  google = true,
-  twitter = true,
-  linkedin = true,
-  facebook = true,
-}: SocialPreviewProps | { [key: string]: any } | undefined = {}): React.FC<DocumentView> => {
+  prepareData = fallbackPrepareData,
+  google,
+  twitter,
+  linkedin,
+  facebook,
+}: SocialPreviewProps = {}) => {
   return function SocialPreviewComponent({ document }: DocumentView) {
-    const previewProps = prepareFunction(document?.displayed)
-    const [network, setNetwork] = useState('linkedin')
+    const previewProps = prepareData(document?.displayed)
+    const [chosenNetwork, setChosenNetwork] = useState<Network>('google')
+
+    const chooseNetwork = useCallback(
+      (network: Network) => () => setChosenNetwork(network),
+      [setChosenNetwork],
+    )
 
     if (!previewProps || !document?.displayed) {
       return (
@@ -106,42 +90,40 @@ const SocialPreview = ({
       )
     }
 
+    const networkProps: Record<Network, ReturnType<PrepareFunction>> = {
+      google: google === false ? undefined : (google || prepareData)(document?.displayed),
+      twitter: twitter === false ? undefined : (twitter || prepareData)(document?.displayed),
+      linkedin: linkedin === false ? undefined : (linkedin || prepareData)(document?.displayed),
+      facebook: facebook === false ? undefined : (facebook || prepareData)(document?.displayed),
+    }
+    const networkKeys = Object.keys(NETWORKS) as Network[]
+
     return (
       <Wrapper>
         <div className="navBar">
-          <button
-            type="button"
-            onClick={() => setNetwork('google')}
-            data-active={network === 'google'}
-          >
-            <GoogleLogo />
-          </button>
-          <button
-            type="button"
-            onClick={() => setNetwork('facebook')}
-            data-active={network === 'facebook'}
-          >
-            <FacebookLogo />
-          </button>
-          <button
-            type="button"
-            onClick={() => setNetwork('twitter')}
-            data-active={network === 'twitter'}
-          >
-            <TwitterLogo />
-          </button>
-          <button
-            type="button"
-            onClick={() => setNetwork('linkedin')}
-            data-active={network === 'linkedin'}
-          >
-            <LinkedinLogo />
-          </button>
+          {networkKeys.map((network) => {
+            if (!networkProps[network]) return null
+
+            const { icon: Icon } = NETWORKS[network]
+            return (
+              <button
+                key={network}
+                type="button"
+                onClick={chooseNetwork(network)}
+                data-active={network === chosenNetwork}
+              >
+                <Icon />
+              </button>
+            )
+          })}
         </div>
-        {network === 'google' && google && <GoogleDesktop {...previewProps} />}
-        {network === 'facebook' && facebook && <FacebookSharePreview {...previewProps} />}
-        {network === 'twitter' && twitter && <TwitterSharePreview {...previewProps} />}
-        {network === 'linkedin' && linkedin && <LinkedinSharePreview {...previewProps} />}
+        {networkKeys.map((network) => {
+          const props = networkProps[network]
+          if (!props || network !== chosenNetwork) return null
+
+          const { component: Component } = NETWORKS[network]
+          return <Component key={network} {...props} />
+        })}
       </Wrapper>
     )
   }

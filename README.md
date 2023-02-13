@@ -4,126 +4,91 @@ Show your editors how their page will look on Google and major social platforms 
 
 ![Screenshot of this plugin in action](screenshot-1.png)
 
+> This is a **Sanity Studio v3** plugin.
+> For the v2 version, please refer to the [0.1.5 version](https://www.npmjs.com/package/sanity-plugin-social-preview/v/0.1.5).
+
 ## Installation & usage
 
-Start by running:
+Start by installing:
 
-`sanity install social-preview`
+```
+npm install sanity-plugin-social-preview
+# or
+yarn add sanity-plugin-social-preview
+```
 
 Now go into your `deskStructure` file and add the following (if you don't have structure builder settings, [check out the official guide](https://www.sanity.io/guides/getting-started-with-structure-builder)):
 
 ```js
 // deskStructure.js
-import SocialPreview from 'part:social-preview/component'
+import { SocialPreview, toPlainText } from 'sanity-plugin-social-preview'
 
 export const getDefaultDocumentNode = ({ schemaType }) => {
-  // Add the social preview view only to those schema types that support it
+  // EXAMPLE: Add the social preview view only to those schema types that support it
   if (['blog.post', 'marketing.page'].includes(schemaType)) {
     return S.document().views([
       S.view.form(),
+
+      // Add your social preview component
       S.view.component(SocialPreview()).title('Social & SEO'),
     ])
   }
+
   return S.document().views([S.view.form()])
 }
 ```
 
-This is going to get you a barebones starter, which you can customize by following the guide below.
-
 ## Customizing
 
-This plugin tries to mimic [Sanity's `preview` behavior on list views](https://www.sanity.io/docs/previews-list-views#specify-preview-options-770fd57a8f95), so you only have to customize it if your fields don't match the default choices below:
+By default, the plugin will try to extract the data for previews based on common data patterns found in Sanity documents, according to the [fallbackPrepareData function](https://github.com/hdoro/sanity-plugin-social-preview/blob/main/src/fallbackPrepareData.ts).
 
-```ts
-{
-  title: doc.title || '(page not yet named)',
-  description: doc.description || doc.metaDescription || doc.seoDescription,
-  siteUrl: 'https://example.com',
-  ogImage: doc.openGraphImage || doc.ogImage || doc.image,
-  slug: doc.slug?.current || doc.relativePath?.current,
-}
-```
-
-If, for example, your description comes from `doc.meta.description` and that's a block content, and you want to change your site's URL shown on cards, you can customize the view by doing so:
+You can, however, customize which data to pick from the current document and display in its social and SEO previews. For that, pass a `prepareData` function, which must return an object with properties to render:
 
 ```js
-import SocialPreview from 'part:social-preview/component'
-import { toPlainText } from 'part:social-preview/utils'
-
-export const getDefaultDocumentNode = ({ schemaType }) => {
-  return S.document().views([
-    S.view.form(),
-    S.view
-      .component(
-        SocialPreview({
-          // Overwrite prepareFunction to pick the right fields
-          prepareFunction: (
-            { title, meta } /* this object is the currently active document */,
-          ) => ({
-            title,
-            description: toPlainText(meta?.description || []),
-            siteUrl: 'https://hdoro.dev',
-          }),
-        }),
-      )
-      .title('Social & SEO'),
-  ])
-}
-```
-
-You can also remove any individual previews:
-
-```js
-S.view.component(
-  SocialPreview({
-    google: true,
-    facebook: false,
-    twitter: true,
-    linkedin: false,
+SocialPreview({
+  // Determine how the SEO/social title, description, url and image are extracted from
+  // the document's value.
+  prepareData: ({ title, seo, body, slug }) => ({
+    title: seo.title || title,
+    description: seo.description || toPlainText(body || []),
+    url: `https://example.com/${slug.current}`,
+    image: seo.ogImage,
   }),
-)
+}),
 ```
 
-💡 Eventually I intend to make our lives easier by providing a `select` object that works like Sanity's list preview, making it easier to overwrite fields without the need for a new `prepare` function. In the meantime, feel free to [**copy the fallbackPrepare function** from this repo](https://github.com/hdoro/sanity-plugin-social-preview/blob/master/src/SocialPreview.tsx#L15-L27).
+If, for example, your description comes from `seo.description` and that's [Portable Text](https://www.portabletext.org/) rich text content, you can use the `toPlainText` helper and `truncate` it:
 
-Your custom `prepare` function must return an object with the following:
+```js
+import { SocialPreview, toPlainText, truncate } from 'sanity-plugin-social-preview'
 
-```ts
-interface PreparedPreview {
-  title: string
-  siteUrl: string
-  // ? denotes an optional prop
-  description?: string
-  ogImage?: {
-    // Regular SanityImage data structure
-    // other fields such as metadata can come in here, but asset is the only necessary
-    asset: {
-      _ref: string
-      _type: 'reference'
-    }
-  }
-  // Used by Google preview to render the full URL
-  // Note that this is a string, not an object (slug { current: string })
-  slug?: string
-}
 
-// And here are the props for the SocialPreview function
-interface SocialPreview {
-  // Function you'll use to customize which props correspond to which
-  prepareFunction: (doc: GenericSanityDoc) => PreparedPreview | undefined
-  google?: boolean
-  twitter?: boolean
-  linkedin?: boolean
-  facebook?: boolean
-}
+// ...
+SocialPreview({
+  prepareData: ({ title, seo }) => ({
+    title,
+    description: truncate(toPlainText(seo?.description || []), 200),
+    url: 'https://hdoro.dev',
+  }),
+}),
 ```
 
-As it stands, you can't customize styles. I've built this over a year ago and haven't revised the styles yet, so some previews are out of date such as those for Facebook. Feel free to contribute to a refresh, it only requires basic React and CSS knowledge 😄 (be aware that styles are messy though, I literally copied them from each site)
+You can also remove and customize any individual previews:
 
-## Possible future improvements
+```js
+SocialPreview({
+  prepareData: () => ({
+    /* your default data preparation... */
+  }),
 
-- Mimic the Sanity-native preview object behavior for selecting the required props
-  - Currently only `prepare` is provided, meaning you have rewrite everything if you need to change a single field's name. Providing `select` would fix this :)
-- Update layouts - LinkedIn and Facebook are wildly different now
+  // Deactivate Facebook previews
+  facebook: false,
 
-Feel free to contribute with your PR, as long as you're respectful. Big thanks to @mornir for your help!
+  // And customize LinkedIn data - this is the same
+  linkedin: ({ title }) => ({
+    title: `${title} | only on LinkedIn`,
+  }),
+})
+```
+
+Feel free to contribute with your PR, as long as you're respectful. Big thanks to @mornir and @fdfontes for your help!

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ShareItem } from '../components/ShareItem'
 import { BasePreviewProps } from '../types'
-import { getDomainName, useUrlFor } from '../utils'
+import { getDomainName, truncate, useUrlFor } from '../utils'
 
 // SVG COMPONENTS:
 import InfoCircle from '../components/Facebook/InfoCircle'
@@ -192,10 +192,10 @@ const Wrapper = styled.div`
   }
 `
 
-export function FacebookSharePreview({ title, description, ogImage, siteUrl }: BasePreviewProps) {
+export function FacebookSharePreview({ title, description, image, url }: BasePreviewProps) {
   const urlFor = useUrlFor()
-  const ogImageUrl: string | undefined = ogImage
-    ? urlFor(ogImage).size(1200, 630).url() || undefined
+  const ogImageUrl: string | undefined = image
+    ? urlFor(image).size(1200, 630).url() || undefined
     : undefined
   return (
     <ShareItem style={{ background: 'rgb(233, 235, 238)' }} title="Facebook sharing">
@@ -219,11 +219,11 @@ export function FacebookSharePreview({ title, description, ogImage, siteUrl }: B
             <InfoCircle />
           </div>
           <div className={'content'}>
-            <div className={'url'}>{getDomainName(siteUrl)}</div>
+            <div className={'url'}>{getDomainName(url)}</div>
             <div className={'title'}>
               <a href="#">{title}</a>
             </div>
-            <div className={'desc'}>{description}</div>
+            {description && <div className={'desc'}>{truncate(description, 200)}</div>}
           </div>
         </div>
         <div className={'actions'}>

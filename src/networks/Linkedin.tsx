@@ -157,10 +157,10 @@ const Wrapper = styled.div`
   }
 `
 
-export function LinkedinSharePreview({ title, description, ogImage, siteUrl }: BasePreviewProps) {
+export function LinkedinSharePreview({ title, image, url }: BasePreviewProps) {
   const urlFor = useUrlFor()
-  const ogImageUrl: string | undefined = ogImage
-    ? urlFor(ogImage).size(1200, 630).url() || undefined
+  const ogImageUrl: string | undefined = image
+    ? urlFor(image).size(1200, 630).url() || undefined
     : undefined
   return (
     <ShareItem style={{ background: '#f5f5f5' }} title="LinkedIn sharing">
@@ -182,7 +182,7 @@ export function LinkedinSharePreview({ title, description, ogImage, siteUrl }: B
         )}
         <div className={'content'}>
           <div>{title}</div>
-          <p className={'url'}>{getDomainName(siteUrl)} • 2 min read</p>
+          <p className={'url'}>{getDomainName(url)} • 2 min read</p>
           {/* {description && <p>{truncate(description, 150)}</p>} */}
         </div>
         <div>
