@@ -164,7 +164,7 @@ export function LinkedinSharePreview({ title, image, url }: BasePreviewProps) {
     <ShareItem style={{ background: '#f5f5f5' }} title="LinkedIn sharing">
       <Wrapper>
         <div className={'profile'}>
-          <img src="https://via.placeholder.com/48/48" aria-hidden alt={`Image for ${title}`} />
+          <img src="https://via.placeholder.com/48x48" aria-hidden alt={`Image for ${title}`} />
           <div>
             Person <span>• 1st</span>
           </div>

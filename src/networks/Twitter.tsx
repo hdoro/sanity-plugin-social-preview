@@ -152,7 +152,7 @@ export function TwitterSharePreview({ title, description, image, url }: BasePrev
   return (
     <ShareItem style={{ background: 'rgb(230, 236, 240)' }} title="Twitter sharing">
       <Wrapper>
-        <img className={'profileImg'} src="https://via.placeholder.com/48/48" aria-hidden />
+        <img className={'profileImg'} src="https://via.placeholder.com/48x48" aria-hidden />
         <div className={'fullCard'}>
           <div className={'profile'}>
             <div className={'userInfo'}>

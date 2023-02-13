@@ -199,7 +199,7 @@ export function FacebookSharePreview({ title, description, image, url }: BasePre
     <ShareItem style={{ background: 'rgb(233, 235, 238)' }} title="Facebook sharing">
       <Wrapper>
         <div className={'header'}>
-          <img src="https://via.placeholder.com/40/40" aria-hidden />
+          <img src="https://via.placeholder.com/40x40" aria-hidden />
           <div className={'headerContent'}>
             <div>Person</div>
             <span>
