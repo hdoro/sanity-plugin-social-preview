@@ -45,22 +45,32 @@ export interface SanityImage {
 
 export interface BasePreviewProps {
   title: string
+  url: string
   description?: string
-  ogImage?: SanityImage
-  siteUrl: string
-  slug?: string
+  image?: SanityImage
 }
 
-declare module 'part:social-preview/component' {
-  const SocialPreview: (props: SocialPreviewProps) => any
-  export default SocialPreview
+export type PrepareFunction = (doc: GenericSanityDoc) => BasePreviewProps | undefined
+
+export interface SocialPreviewProps {
+  /**
+   * Function to determine how the SEO/social title, description, url and image are extracted from the document.
+   *
+   * Takes the current Sanity document and returns an object with BasePreviewProps.
+   * 
+   * @example
+   * ({ title, seo, body }) => ({
+        title: seo.title || title,
+        description: seo.description || toPlainText(body || []),
+        siteUrl: 'https://example.com',
+        image: seo.ogImage,
+      })
+   */
+  prepareData?: PrepareFunction
+  google?: PrepareFunction | false
+  twitter?: PrepareFunction | false
+  linkedin?: PrepareFunction | false
+  facebook?: PrepareFunction | false
 }
 
-declare module 'part:social-preview/utils' {
-  export function toPlainText(
-    blocks: any[],
-    opts: {
-      nonTextBehavior?: 'remove'
-    } = {},
-  ): string
-}
+export type Network = 'google' | 'twitter' | 'linkedin' | 'facebook'
