@@ -1,20 +1,19 @@
-import React from 'react'
-import { useState } from 'react'
-import { Spinner, Flex } from '@sanity/ui'
+import { Flex, Spinner } from '@sanity/ui'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { FacebookSharePreview } from './networks/Facebook'
-import { TwitterSharePreview } from './networks/Twitter'
+import { GoogleDesktop } from './networks/Google'
 import { LinkedinSharePreview } from './networks/Linkedin'
-import { GoogleDesktop, GoogleMobile } from './networks/Google'
-import { DocumentView, GenericSanityDoc, BasePreviewProps } from './types'
+import { TwitterSharePreview } from './networks/Twitter'
+import { BasePreviewProps, DocumentView, GenericSanityDoc } from './types'
 import { toPlainText } from './utils'
 
 // LOGOS:
 import FacebookLogo from './components/Facebook/FacebookLogo'
 import GoogleLogo from './components/GoogleLogo'
-import TwitterLogo from './components/TwitterLogo'
 import LinkedinLogo from './components/LinkedinLogo'
+import TwitterLogo from './components/TwitterLogo'
 
 function fallbackPrepare(doc: GenericSanityDoc): BasePreviewProps | void {
   if (!doc) {
@@ -52,11 +51,21 @@ export interface SocialPreviewProps {
 
 const Wrapper = styled.div`
   font-family: Open Sans, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
   .navBar {
     background-color: white;
     display: flex;
-    margin: 1.5em 12.5em;
-    justify-content: space-around;
+    padding: 1.25em 0;
+    justify-content: center;
+    gap: 1em;
+    border-bottom: 1px solid #eaeaea;
+    // Make the network preview wrappers take up the remaining height of the panel
+    + * {
+      flex: 1;
+    }
   }
 
   button {
@@ -99,42 +108,40 @@ const SocialPreview = ({
 
     return (
       <Wrapper>
-        <>
-          <div className="navBar">
-            <button
-              type="button"
-              onClick={() => setNetwork('google')}
-              data-active={network === 'google'}
-            >
-              <GoogleLogo />
-            </button>
-            <button
-              type="button"
-              onClick={() => setNetwork('facebook')}
-              data-active={network === 'facebook'}
-            >
-              <FacebookLogo />
-            </button>
-            <button
-              type="button"
-              onClick={() => setNetwork('twitter')}
-              data-active={network === 'twitter'}
-            >
-              <TwitterLogo />
-            </button>
-            <button
-              type="button"
-              onClick={() => setNetwork('linkedin')}
-              data-active={network === 'linkedin'}
-            >
-              <LinkedinLogo />
-            </button>
-          </div>
-          {network === 'google' && google && <GoogleDesktop {...previewProps} />}
-          {network === 'facebook' && facebook && <FacebookSharePreview {...previewProps} />}
-          {network === 'twitter' && twitter && <TwitterSharePreview {...previewProps} />}
-          {network === 'linkedin' && linkedin && <LinkedinSharePreview {...previewProps} />}
-        </>
+        <div className="navBar">
+          <button
+            type="button"
+            onClick={() => setNetwork('google')}
+            data-active={network === 'google'}
+          >
+            <GoogleLogo />
+          </button>
+          <button
+            type="button"
+            onClick={() => setNetwork('facebook')}
+            data-active={network === 'facebook'}
+          >
+            <FacebookLogo />
+          </button>
+          <button
+            type="button"
+            onClick={() => setNetwork('twitter')}
+            data-active={network === 'twitter'}
+          >
+            <TwitterLogo />
+          </button>
+          <button
+            type="button"
+            onClick={() => setNetwork('linkedin')}
+            data-active={network === 'linkedin'}
+          >
+            <LinkedinLogo />
+          </button>
+        </div>
+        {network === 'google' && google && <GoogleDesktop {...previewProps} />}
+        {network === 'facebook' && facebook && <FacebookSharePreview {...previewProps} />}
+        {network === 'twitter' && twitter && <TwitterSharePreview {...previewProps} />}
+        {network === 'linkedin' && linkedin && <LinkedinSharePreview {...previewProps} />}
       </Wrapper>
     )
   }

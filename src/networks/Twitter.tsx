@@ -217,30 +217,6 @@ export function TwitterSharePreview({ title, description, ogImage, siteUrl }: Ba
                 </g>
               </svg>
             </div>
-            <div>
-              <svg
-                width="50"
-                height="42"
-                viewBox="0 0 50 42"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.14435 40L25.0103 3.42423L46.8569 40H3.14435Z"
-                  stroke="#6C7683"
-                  strokeWidth="3"
-                  fill="none"
-                />
-                <path
-                  d="M25.25 19V19.5096L25.5236 19.9395L32.5236 30.9395L32.6754 31.1781L32.8946 31.3567L39.9146 37.0767L39.1787 36.8723L32.3682 32.9806L31.9647 32.75H31.5H24H17.5H17.0625L16.6765 32.9559L9.35433 36.861L7.79526 37.2768L8.67232 36.312L17.5246 29.9187L17.7808 29.7337L17.9561 29.4707L23.9561 20.4707L24.25 20.0299V19.5V10.752L24.8631 8.66764L25.25 10.2154V19Z"
-                  stroke="#6C7683"
-                  strokeWidth="3.5"
-                  fill="none"
-                />
-              </svg>
-
-              <h4>Tip</h4>
-            </div>
           </div>
         </div>
       </Wrapper>

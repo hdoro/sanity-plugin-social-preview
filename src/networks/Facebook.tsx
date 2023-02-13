@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   background: #fff;
   color: #1c1e21;
   line-height: 1.34;
+  max-width: min(680px, 100%);
   border-radius: max(0px, min(8px, ((100vw - 4px) - 100%) * 9999)) / 8px;
 
   &:hover .content {
@@ -122,6 +123,7 @@ const Wrapper = styled.div`
     background: #f0f2f5;
     height: 52px;
     line-height: 16.08px;
+    overflow: hidden;
   }
 
   .url {
