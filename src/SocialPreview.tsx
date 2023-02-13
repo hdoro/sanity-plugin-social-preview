@@ -67,9 +67,12 @@ const Wrapper = styled.div`
     transition: all 0.2s;
     filter: grayscale(1);
 
-    &:hover {
+    &:hover,
+    &:focus-visible,
+    &[data-active='true'] {
       transform: scale(1.03);
       filter: grayscale(0);
+      outline: none;
     }
   }
 `
@@ -98,16 +101,32 @@ const SocialPreview = ({
       <Wrapper>
         <>
           <div className="navBar">
-            <button type="button" onClick={() => setNetwork('google')}>
+            <button
+              type="button"
+              onClick={() => setNetwork('google')}
+              data-active={network === 'google'}
+            >
               <GoogleLogo />
             </button>
-            <button type="button" onClick={() => setNetwork('facebook')}>
+            <button
+              type="button"
+              onClick={() => setNetwork('facebook')}
+              data-active={network === 'facebook'}
+            >
               <FacebookLogo />
             </button>
-            <button type="button" onClick={() => setNetwork('twitter')}>
+            <button
+              type="button"
+              onClick={() => setNetwork('twitter')}
+              data-active={network === 'twitter'}
+            >
               <TwitterLogo />
             </button>
-            <button type="button" onClick={() => setNetwork('linkedin')}>
+            <button
+              type="button"
+              onClick={() => setNetwork('linkedin')}
+              data-active={network === 'linkedin'}
+            >
               <LinkedinLogo />
             </button>
           </div>
