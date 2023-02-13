@@ -82,7 +82,7 @@ const SocialPreview = ({
       [setChosenNetwork],
     )
 
-    if (!previewProps || !document?.displayed) {
+    if (!previewProps || !document?.displayed || Object.keys(document.displayed).length <= 2) {
       return (
         <Flex justify="center" align="center" height="fill">
           <Spinner muted size={2} />
