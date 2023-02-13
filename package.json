@@ -1,7 +1,7 @@
 {
   "name": "sanity-plugin-social-preview",
   "displayName": "Sanity Social Preview plugin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Show your editors how their page will look on Google and major social platforms in your documents' view",
   "keywords": [
     "Sanity.io",
