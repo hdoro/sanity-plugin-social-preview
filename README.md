@@ -87,6 +87,9 @@ SocialPreview({
   // And customize LinkedIn data - this is the same
   linkedin: ({ title }) => ({
     title: `${title} | only on LinkedIn`,
+
+    // Images can also be external URLs
+    image: 'https://my-site.com/og-linkedin.png',
   }),
 })
 ```

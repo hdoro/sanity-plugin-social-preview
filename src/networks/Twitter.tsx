@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ShareItem } from '../components/ShareItem'
 import ThreeDots from '../components/ThreeDots'
 import { BasePreviewProps } from '../types'
-import { getDomainName, truncate, useUrlFor } from '../utils'
+import { getDomainName, truncate, useImageUrl } from '../utils'
 
 const Wrapper = styled.div`
   padding: 12px 16px;
@@ -147,10 +147,8 @@ const Wrapper = styled.div`
 `
 
 export function TwitterSharePreview({ title, description, image, url }: BasePreviewProps) {
-  const urlFor = useUrlFor()
-  const ogImageUrl: string | undefined = image
-    ? urlFor(image).size(1200, 600).url() || undefined
-    : undefined
+  const ogImageUrl = useImageUrl(image, { w: 1200, h: 600 })
+
   return (
     <ShareItem style={{ background: 'rgb(230, 236, 240)' }} title="Twitter sharing">
       <Wrapper>
@@ -170,7 +168,7 @@ export function TwitterSharePreview({ title, description, image, url }: BasePrev
             <ThreeDots />
           </div>
           <div className={'card'}>
-            <img src={ogImageUrl} />
+            {ogImageUrl && <img src={ogImageUrl} alt={`Image for ${title}`} />}
             <div className={'content'}>
               <span>{getDomainName(url)}</span>
               <div>{title}</div>

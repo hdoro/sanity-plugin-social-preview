@@ -47,7 +47,11 @@ export interface BasePreviewProps {
   title: string
   url: string
   description?: string
-  image?: SanityImage
+  /**
+   * Pass an image object for images hosted in Sanity;
+   * or a full URL for external images
+   */
+  image?: SanityImage | string
 }
 
 export type PrepareFunction = (doc: GenericSanityDoc) => BasePreviewProps | undefined

@@ -1,6 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url'
 import { useDataset, useProjectId } from 'sanity'
-import { SanityImage } from './types'
+import { BasePreviewProps, SanityImage } from './types'
 
 export const getDomainName = (str: string): string => {
   try {
@@ -12,12 +12,22 @@ export const getDomainName = (str: string): string => {
 }
 
 // eslint-disable-next-line
-export const useUrlFor = () => {
+export const useImageUrl = (
+  image: BasePreviewProps['image'],
+  dimensions: { w: number; h: number },
+) => {
   const projectId = useProjectId()
   const dataset = useDataset()
 
+  if (!image) return undefined
+
+  if (typeof image === 'string') {
+    return image
+  }
+
   const builder = imageUrlBuilder({ projectId, dataset })
-  return (source: SanityImage) => builder.image(source)
+
+  return builder.image(image).width(dimensions.w).height(dimensions.h).url()
 }
 
 export const assemblePageUrl = ({

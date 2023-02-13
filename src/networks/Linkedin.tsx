@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import GlobeIcon from '../components/GlobeIcon'
 import { ShareItem } from '../components/ShareItem'
 import { BasePreviewProps } from '../types'
-import { getDomainName, useUrlFor } from '../utils'
+import { getDomainName, useImageUrl } from '../utils'
 
 const Wrapper = styled.div`
   max-width: 552px;
@@ -158,15 +158,13 @@ const Wrapper = styled.div`
 `
 
 export function LinkedinSharePreview({ title, image, url }: BasePreviewProps) {
-  const urlFor = useUrlFor()
-  const ogImageUrl: string | undefined = image
-    ? urlFor(image).size(1200, 630).url() || undefined
-    : undefined
+  const ogImageUrl = useImageUrl(image, { w: 1200, h: 630 })
+
   return (
     <ShareItem style={{ background: '#f5f5f5' }} title="LinkedIn sharing">
       <Wrapper>
         <div className={'profile'}>
-          <img src="https://via.placeholder.com/48/48" aria-hidden />
+          <img src="https://via.placeholder.com/48/48" aria-hidden alt={`Image for ${title}`} />
           <div>
             Person <span>• 1st</span>
           </div>
