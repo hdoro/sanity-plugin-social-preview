@@ -1,5 +1,5 @@
 import { Flex, Spinner } from '@sanity/ui'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import FacebookLogo from './components/Facebook/FacebookLogo'
@@ -15,7 +15,6 @@ import {
   BasePreviewProps,
   DocumentView,
   Network,
-  PrepareFunction,
   SocialPreviewProps,
 } from './types'
 
@@ -66,6 +65,11 @@ const NETWORKS: Record<
   linkedin: { icon: LinkedinLogo, component: LinkedinSharePreview },
 }
 
+async function asyncCall(this: unknown, item: unknown, ...args: unknown[]): Promise<unknown> {
+  // eslint-disable-next-line no-return-await
+  return await (typeof item === 'function' ? item.apply(this, args) : item)
+}
+
 const SocialPreview = ({
   prepareData = fallbackPrepareData,
   google,
@@ -74,15 +78,63 @@ const SocialPreview = ({
   facebook,
 }: SocialPreviewProps = {}) => {
   return function SocialPreviewComponent({ document }: DocumentView) {
-    const previewProps = prepareData(document?.displayed)
+    const [loading, setLoading] = useState<boolean | undefined>(undefined)
     const [chosenNetwork, setChosenNetwork] = useState<Network>('google')
+    const [networkProps, setNetworkProps] = useState<Record<PropertyKey, BasePreviewProps>>({})
 
     const chooseNetwork = useCallback(
       (network: Network) => () => setChosenNetwork(network),
       [setChosenNetwork],
     )
 
-    if (!previewProps || !document?.displayed || Object.keys(document.displayed).length <= 2) {
+    const availableNetworks: Record<Network, boolean | undefined> = {
+      google: google === false ? undefined : true,
+      twitter: twitter === false ? undefined : true,
+      linkedin: linkedin === false ? undefined : true,
+      facebook: facebook === false ? undefined : true,
+    }
+    const networkKeys = Object.keys(NETWORKS) as Network[]
+
+    useEffect(() => {
+      const loadProps = () => {
+        setLoading(true)
+
+        Promise.all([
+          asyncCall(prepareData, document?.displayed) as Promise<BasePreviewProps>,
+          asyncCall(google, document?.displayed) as Promise<BasePreviewProps>,
+          asyncCall(twitter, document?.displayed) as Promise<BasePreviewProps>,
+          asyncCall(linkedin, document?.displayed) as Promise<BasePreviewProps>,
+          asyncCall(facebook, document?.displayed) as Promise<BasePreviewProps>,
+        ]).then(([data, googleData, twitterData, linkedinData, facebookData]) => {
+          const newNetworkProps = { ...networkProps }
+
+          if (availableNetworks.google) {
+            newNetworkProps.google = googleData || data
+          }
+
+          if (availableNetworks.twitter) {
+            newNetworkProps.twitter = twitterData || data
+          }
+
+          if (availableNetworks.linkedin) {
+            newNetworkProps.linkedin = linkedinData || data
+          }
+
+          if (availableNetworks.facebook) {
+            newNetworkProps.facebook = facebookData || data
+          }
+
+          setNetworkProps(newNetworkProps)
+          setLoading(false)
+        })
+      }
+
+      if (loading === undefined) {
+        loadProps()
+      }
+    }, [loading, setLoading])
+
+    if (loading !== false) {
       return (
         <Flex justify="center" align="center" height="fill">
           <Spinner muted size={2} />
@@ -90,19 +142,11 @@ const SocialPreview = ({
       )
     }
 
-    const networkProps: Record<Network, ReturnType<PrepareFunction>> = {
-      google: google === false ? undefined : (google || prepareData)(document?.displayed),
-      twitter: twitter === false ? undefined : (twitter || prepareData)(document?.displayed),
-      linkedin: linkedin === false ? undefined : (linkedin || prepareData)(document?.displayed),
-      facebook: facebook === false ? undefined : (facebook || prepareData)(document?.displayed),
-    }
-    const networkKeys = Object.keys(NETWORKS) as Network[]
-
     return (
       <Wrapper>
         <div className="navBar">
           {networkKeys.map((network) => {
-            if (!networkProps[network]) return null
+            if (!availableNetworks[network]) return null
 
             const { icon: Icon } = NETWORKS[network]
             return (
@@ -118,11 +162,10 @@ const SocialPreview = ({
           })}
         </div>
         {networkKeys.map((network) => {
-          const props = networkProps[network]
-          if (!props || network !== chosenNetwork) return null
+          if (!availableNetworks[network] || network !== chosenNetwork) return null
 
           const { component: Component } = NETWORKS[network]
-          return <Component key={network} {...props} />
+          return <Component key={network} {...networkProps[network]} />
         })}
       </Wrapper>
     )
