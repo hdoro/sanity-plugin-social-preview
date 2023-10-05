@@ -108,6 +108,7 @@ export function GoogleDesktop({ title, description, url }: BasePreviewProps) {
           </div>
         </div>
         <h3>{title}</h3>
+        {/* @TODO: add optional date before description */}
         {/* {date && <span>Mar 9, 2021&nbsp;—&nbsp;</span>} */}
         {description && <p>{truncate(description, 135)}</p>}
       </DesktopWrapper>
