@@ -8,45 +8,92 @@ import { getDomainName, truncate } from '../utils'
 const DesktopWrapper = styled.div`
   line-height: 1.3;
   font-family: arial, sans-serif;
-  max-width: 773px;
+  max-width: 600px;
+  padding: 20px;
+  box-sizing: content-box;
+  border-radius: 8px;
 
   .header {
     display: flex;
     align-items: center;
-    padding: 1px 0 2px 0;
-    font-size: 14px;
-    color: #202124;
-    height: 20.539px; }
+    font-size: 12px;
+  }
 
-    .header > span {
-      padding-right: 12px;
-    }
+  .dots {
+    margin-left: 12px;
+    transform: rotate(90deg);
+  }
 
-    .dots {
-      transform: rotate(90deg);
-      padding-top: 5px;
-    }
-
-    .dots > svg {
-      width: 16px;
-      height: 16px;
-    }
+  .dots > svg {
+    width: 12px;
+    height: 12px;
   }
 
   > h3 {
-    color: #1a0dab;
+    margin: 5px 0 0;
     font-size: 20px;
     line-height: 1.3;
     font-weight: normal;
-    margin: 5px 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    :hover {
+      text-decoration: underline;
+    }
   }
 
-  > p {
-    color: #4d5156;
+  > p,
+  > span {
+    margin: 0;
     font-size: 14px;
     line-height: 1.58;
     word-wrap: break-word;
-    margin: 0;
+    display: inline-block;
+  }
+
+  [data-scheme='light'] & {
+    background-color: #fff;
+
+    .header {
+      color: #4d5156;
+
+      .dots > svg {
+        fill: #4d5156;
+      }
+    }
+
+    > h3 {
+      color: #1a0dab;
+    }
+    > span {
+      color: #70757a;
+    }
+    > p {
+      color: #4d5156;
+    }
+  }
+
+  [data-scheme='dark'] & {
+    background-color: #202124;
+
+    .header {
+      color: #bdc1c6;
+
+      .dots > svg {
+        fill: #9aa0a6;
+      }
+    }
+
+    > h3 {
+      color: #8ab4f8;
+    }
+    > span {
+      color: #9aa0a6;
+    }
+    > p {
+      color: #bdc1c6;
+    }
   }
 `
 
@@ -62,6 +109,7 @@ export function GoogleDesktop({ title, description, url }: BasePreviewProps) {
         </div>
         <h3>{title}</h3>
         {/* @TODO: add optional date before description */}
+        {/* {date && <span>Mar 9, 2021&nbsp;—&nbsp;</span>} */}
         {description && <p>{truncate(description, 135)}</p>}
       </DesktopWrapper>
     </ShareItem>
