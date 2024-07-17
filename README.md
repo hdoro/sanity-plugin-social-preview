@@ -1,3 +1,5 @@
+⚠️ **Notice:** I no longer mantain this repository. I won't reply to requests, bug reports or PRs. Feel free to fork and deploy your own version, you have my blessing.
+
 # Sanity social and SEO document preview
 
 Show your editors how their page will look on Google and major social platforms in your documents' view
